@@ -1,0 +1,26 @@
+use crate::DirectoryAccount;
+use anchor_lang::prelude::*;
+
+// Main orderbook state account
+#[account]
+pub struct Orderbook {
+    pub authority: Pubkey, // Admin authority
+
+    // token accounts
+    pub base_mint: Pubkey,  // Token mint for base currency
+    pub quote_mint: Pubkey, // Token mint for quote currency
+
+    // orderbook metadata
+    pub tick_size: u64,   // Minimum price increment
+    pub bucket_size: u64, // Default price range per bucket
+    pub best_bid: u64,    // Current best bid price
+    pub best_ask: u64,    // Current best ask price
+    pub total_bids: u64,  // Total bids in the orderbook
+    pub total_asks: u64,  // Total asks in the orderbook
+
+    // orderbooks
+    pub bid_book: DirectoryAccount, // buy book
+    pub ask_book: DirectoryAccount, // sell book
+
+    pub bump: u8, // For PDA derivation
+}
