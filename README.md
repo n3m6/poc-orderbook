@@ -1,4 +1,6 @@
-# Solana Orderbook Proof-of-Concept: Sparse Directory & Price Bucketing Implementation
+# Solana Onchain Orderbook Proof-of-Concept
+
+<img src="./docs/hacker-trader.jpg" alt="drawing" width="400"/>
 
 ## Overview
 
