@@ -1,6 +1,6 @@
 # Solana Onchain Orderbook Proof-of-Concept
 
-<img src="./docs/hacker-trader.jpg" alt="drawing" width="400"/>
+<img src="./docs/hacker-trader.jpg" alt="drawing" width="640"/>
 
 ## Overview
 
