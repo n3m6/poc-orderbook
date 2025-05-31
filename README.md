@@ -7,11 +7,11 @@
 This proof-of-concept demonstrates a high-performance orderbook implementation on Solana using a **sparse directory 
 structure** with **price-level bucketing** - an architecture specifically designed to overcome Solana's account size 
 limitations while maintaining real-time performance for financial applications. For a simpler explanation of the 
-data structure, read the [Architecture Overview](docs/data-structure.md).
+data structure, read the [Data Structure Overview](docs/data-structure.md).
 
 ## Core Architecture
 
-### 1. Tiered Storage Structure
+### Tiered Storage Structure
 
 ```
 Orderbook State (1 account)
