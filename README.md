@@ -4,14 +4,10 @@
 
 ## Overview
 
-This proof-of-concept demonstrates a high-performance orderbook implementation on Solana using a **sparse directory structure** with **price-level bucketing** - an architecture specifically designed to overcome Solana's account size limitations while maintaining real-time performance for financial applications.
-
-The system achieves:
-- **O(log d)** order placement/cancellation (d = directory size)
-- **O(1)** best bid/ask access
-- **O(log d + k)** range queries (k = results)
-- Efficient sharding across Solana's 10MiB account limit
-- Predictable compute unit consumption
+This proof-of-concept demonstrates a high-performance orderbook implementation on Solana using a **sparse directory 
+structure** with **price-level bucketing** - an architecture specifically designed to overcome Solana's account size 
+limitations while maintaining real-time performance for financial applications. For a simpler explanation of the 
+data structure, read the [Architecture Overview](docs/data-structure.md).
 
 ## Core Architecture
 
@@ -28,23 +24,6 @@ Orderbook State (1 account)
 │              │
 │              └── Individual Orders
 ```
-
-### 2. Key Components
-
-| Component          | Description                                                                 | Size Estimate |
-|--------------------|-----------------------------------------------------------------------------|--------------|
-| **OrderbookState** | Global state (symbol, tick size, best bid/ask)                              | ~200 bytes   |
-| **Directory**      | Maps price ranges to buckets (sorted array for binary search)               | ~100 KB      |
-| **PriceBucket**    | Manages 1000 price levels (stores aggregates, not individual orders)        | ~32 KB       |
-| **OrderPage**      | Stores up to 64 orders at specific price level (linked list structure)      | ~4 KB        |
-
-### 3. Capacity Scaling
-
-| Structure       | Units per Account | Total Capacity          |
-|-----------------|-------------------|-------------------------|
-| Directory       | 2000 buckets      | 2000 price ranges       |
-| Price Bucket    | 1000 price levels | 2,000,000 price levels  |
-| Order Page      | 64 orders         | Virtually unlimited     |
 
 ## Key Features
 
@@ -74,15 +53,6 @@ Orderbook State (1 account)
     - Smaller buckets near spread for tighter price granularity
     - Larger buckets for less active price areas
 
-## Performance Characteristics
-
-| Operation        | Compute Units | Accounts Touched | Complexity        |
-|------------------|---------------|------------------|-------------------|
-| Place Order      | 5,000-7,000   | 4-5              | O(log d + k)      |
-| Cancel Order     | 3,000-5,000   | 3-4              | O(log d + k)      |
-| Get Best Bid/Ask | 500-800       | 1                | O(1)             |
-| Range Query      | 1,000/level   | 1 + n/levels     | O(log d + k)      |
-
 ## Getting Started
 
 ### Prerequisites
@@ -96,51 +66,6 @@ git clone https://github.com/n3m6/poc-orderbook.git
 cd poc-orderbook
 anchor build
 anchor test
-```
-
-### Basic Workflow
-
-1. **Initialize Orderbook**
-```typescript
-await program.methods.initializeOrderbook(
-  baseMint, 
-  quoteMint,
-  new BN(100), // tick size
-  new BN(10000) // bucket size
-).accounts({ ... }).rpc();
-```
-
-2. **Place Bid Order**
-```typescript
-await program.methods.placeOrder(
-  new BN(10500), // price
-  new BN(500),   // quantity
-  true           // isBid
-).accounts({
-  orderbook: orderbookState,
-  directory: mainDirectory,
-  bucket: targetBucket,
-  orderPage: currentPage,
-  // ... other accounts
-}).rpc();
-```
-
-3. **Cancel Order**
-```typescript
-await program.methods.cancelOrder(
-  orderId        // 128-bit order ID
-).accounts({
-  orderbook: orderbookState,
-  bucket: targetBucket,
-  orderPage: pageAccount,
-  // ... other accounts
-}).rpc();
-```
-
-4. **Query Best Bid**
-```typescript
-const state = await program.account.orderbookState.fetch(orderbookState);
-console.log("Best bid:", state.bestBid.toString());
 ```
 
 ## Design Tradeoffs
@@ -157,14 +82,6 @@ console.log("Best bid:", state.bestBid.toString());
     - Directory management overhead
     - Requires careful tick size configuration
     - More accounts to manage
-
-## Next Steps for Production
-
-1. Implement dynamic bucket resizing based on market volatility
-2. Add order matching engine logic
-3. Develop garbage collection for empty pages
-4. Create snapshotting mechanism for market data feeds
-5. Integrate with on-chain oracle for price validation
 
 ## Why This Architecture Wins for Solana
 
