@@ -43,15 +43,14 @@ pub fn create_orderbook(
     tick_size: u64,     // Tick size  (e.g. 0.01 USDC)
     current_price: u64, // Current price for the pair
 ) -> Result<()> {
-    
     // TODO directory vector size should be calculated based on tick_size and current_price
     // TODO max_tier should also be calculated based on tick_size and current_price
-    
+
     ctx.accounts.orderbook.set_inner(Orderbook {
         authority: ctx.accounts.authority.key(),
-        base_mint,   // Placeholder, set later
-        quote_mint, // Placeholder, set later
-        tick_size,   // Example tick size (1 USDC)
+        base_mint,               // Placeholder, set later
+        quote_mint,              // Placeholder, set later
+        tick_size,               // Example tick size (1 USDC)
         bucket_size: 10_000_000, // Example bucket size (10 USDC)
         best_bid: 0,
         best_ask: 0,

@@ -4,7 +4,7 @@ use anchor_lang::prelude::*;
 // Main orderbook state account
 #[account]
 pub struct Orderbook {
-    pub authority: Pubkey, // Admin authority
+    pub authority: Pubkey,
 
     // token accounts
     pub base_mint: Pubkey,  // Token mint for base currency
@@ -13,10 +13,10 @@ pub struct Orderbook {
     // orderbook metadata
     pub tick_size: u64,   // Minimum price increment
     pub bucket_size: u64, // Default price range per bucket
-    pub best_bid: u64,    // Current best bid price
-    pub best_ask: u64,    // Current best ask price
-    pub total_bids: u64,  // Total bids in the orderbook
-    pub total_asks: u64,  // Total asks in the orderbook
+    pub best_bid: u64,
+    pub best_ask: u64,
+    pub total_bids: u64,
+    pub total_asks: u64,
 
     // directory accounts configuration
     pub max_tier_level: u8, // Maximum tier level to use (eg. 4)
