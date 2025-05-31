@@ -1,9 +1,5 @@
 # Understanding the Sparse Directory/Price Bucketing Data Structure
 
-## Introduction
-
-This report explains the Sparse Directory/Price Bucketing data structure in simple terms, with examples and a practical implementation guide for Solana using Anchor. This structure was recommended for implementing an orderbook on Solana blockchain.
-
 ## What is a Sparse Directory/Price Bucketing Structure?
 
 Imagine you're organizing a large library of books. Instead of putting all books on one giant shelf (which would make finding anything difficult), you:
@@ -184,40 +180,6 @@ pub struct Order {
     pub timestamp: i64,               // When the order was placed
 }
 ```
-
-## Design Decisions Explained
-
-### 1. DirectoryAccount
-
-- **Why a separate account?** The directory needs to be accessed frequently but modified rarely. Keeping it separate allows for efficient lookups without loading all order data.
-
-- **Why store authority?** This allows for permissioned operations (only the authority can initialize new price accounts).
-
-- **Why use a vector for price ranges?** This allows for dynamic addition of new price ranges as the market evolves.
-
-### 2. PriceRange
-
-- **Why store min and max price?** This creates clear boundaries for each account, making it easy to find the right account for a given price.
-
-- **Why use u64 for prices?** Solana typically represents token amounts in lamports (smallest unit), so u64 provides sufficient range for prices.
-
-### 3. PriceLevelAccount
-
-- **Why separate accounts per price range?** This respects Solana's 10MB account size limit and allows for parallel processing of different price ranges.
-
-- **Why duplicate min/max price?** This redundancy allows the account to be used independently without always needing to check the directory.
-
-### 4. PriceLevel
-
-- **Why track total_quantity and order_count?** This allows for quick access to summary information without iterating through all orders.
-
-- **Why a vector of orders?** This allows for multiple orders at the same price level, which is common in orderbooks.
-
-### 5. Order
-
-- **Why include timestamp?** This allows for time-based prioritization if needed (first come, first served within a price level).
-
-- **Why include order_id?** This provides a unique identifier for cancellations and modifications.
 
 ## Implementation Considerations
 

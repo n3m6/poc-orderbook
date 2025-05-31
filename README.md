@@ -44,14 +44,7 @@ Orderbook State (1 account)
    ```
 
 3. **Optimized Memory Usage**
-    - Zero-copy deserialization for high-frequency access
     - Linked lists minimize data shifting
-    - Aggregated price level data (total quantity) avoids full scans
-
-4. **Hot/Cold Data Separation**
-    - Dedicated bucket types for active vs. inactive price ranges
-    - Smaller buckets near spread for tighter price granularity
-    - Larger buckets for less active price areas
 
 ## Getting Started
 
