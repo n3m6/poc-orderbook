@@ -18,6 +18,13 @@ pub struct Orderbook {
     pub total_bids: u64,  // Total bids in the orderbook
     pub total_asks: u64,  // Total asks in the orderbook
 
+    // directory accounts configuration
+    pub max_tier_level: u8, // Maximum tier level to use (eg. 4)
+
+    // TODO add cached pointers to best bid/ask price levels
+    // pub best_bid_price_level: Pubkey, // Cached best bid price level account
+    // pub best_ask_price_level: Pubkey, // Cached best ask price level account
+
     // orderbooks
     pub bid_book: DirectoryAccount, // buy book
     pub ask_book: DirectoryAccount, // sell book
