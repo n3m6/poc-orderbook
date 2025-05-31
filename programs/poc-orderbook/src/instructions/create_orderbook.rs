@@ -45,6 +45,7 @@ pub fn create_orderbook(
 ) -> Result<()> {
     
     // TODO directory vector size should be calculated based on tick_size and current_price
+    // TODO max_tier should also be calculated based on tick_size and current_price
     
     ctx.accounts.orderbook.set_inner(Orderbook {
         authority: ctx.accounts.authority.key(),
